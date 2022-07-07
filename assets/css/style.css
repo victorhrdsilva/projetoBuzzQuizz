@@ -270,3 +270,23 @@ body {
     border: none;
     margin-top: 85px;
 }
+
+.crate-quizz-information.closed{
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.crate-quizz-information.input h2{
+    align-self: flex-start;
+    margin: 15px 0 12px 17px;
+    font-size: 20px;
+}
+
+.crate-quizz-information ion-icon{
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.space {
+    margin-top: 20px;
+}

@@ -48,6 +48,7 @@ function comparator() {
 function loadPageOfSingleQuizz (element) {
     questions = element.data.questions
     levels = element.data.levels
+    console.log(levels)
     page.innerHTML = `
     <div class="quizz-image" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.57), rgba(0, 0, 0, 0.57)), url('${element.data.image}')">
         <p>${element.data.title}</p>
@@ -124,7 +125,7 @@ function showResult () {
     let userLevel
     for(let i = (levels.length - 1); i >= 0; i--) {
         let minValueLevel = levels[i].minValue;
-        if (minValueLevel >= hitsPercentage){
+        if (hitsPercentage >= minValueLevel){
             userLevel = levels[i];
         }
     }
@@ -154,6 +155,7 @@ function resetQuizz() {
     totalClicks = 0
     hitsPercentage = 0
     points = 0
+    userLevel = undefined
 }
 
 function home() {
@@ -176,10 +178,10 @@ function createQuizz() {
         <input id="question-number" type="number" placeholder="Quantidade de perguntas do quizz">
         <input id="question-nivel" type="number" placeholder="Quantidade de níveis do quizz">
     </div>
-    <button onclick="sendInformationsQuestion()" class="create-button">Prosseguir pra criar perguntas</button>`
+    <button onclick="sendInformationsQuizz()" class="create-button">Prosseguir pra criar perguntas</button>`
 }
 
-function sendInformationsQuestion(){
+function sendInformationsQuizz(){
     title = document.getElementById('title').value;
     urlImage = document.getElementById('url-image').value;
     questionNivel = document.getElementById('question-nivel').value;
@@ -204,4 +206,48 @@ function sendInformationsQuestion(){
     } else {
         alert('Preencha todos os campos para continuar')
     }
+}
+
+function createQuestions () {
+    page = `
+    <div>
+        <h2>Crie suas perguntas</h2>
+    </div>
+    <div class="crate-quizz-information input">
+        <h2>Pergunta 1</h2>
+        <input id="question1" type="text" placeholder="Texto da pergunta">
+        <input id="question1-color" type="text" placeholder="Cor de fundo da pergunta">
+        <h2>Resposta correta</h2>
+        <input id="correct-answer" type="text" placeholder="Resposta correta">
+        <input id="correct-answer-image" type="url" placeholder="URL da imagem">
+        <h2>Respostas incorretas</h2>
+        <input id="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
+        <input id="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
+        <input class="space"  id="wrong-answer2" type="text" placeholder="Resposta incorreta 2">
+        <input id="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
+        <input class="space" id="wrong-answer3" type="text" placeholder="Resposta incorreta 3">
+        <input id="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
+    </div>
+    <div class="crate-quizz-information input closed">
+        <h2>Pergunta 2</h2>
+        <ion-icon function="openCreateQuizz(2)" name="create-outline"></ion-icon>
+    </div>
+    <div class="crate-quizz-information input closed">
+        <h2>Pergunta 3</h2>
+        <ion-icon function="openCreateQuizz(3)" name="create-outline"></ion-icon>
+    </div>
+    `
+
+    if(questionNumber > 3) {
+        for (let i = 4; i < questionNumber; i++) {
+            page += `
+            <div class="crate-quizz-information input closed">
+                <h2>Pergunta ${i}</h2>
+                <ion-icon function="openCreateQuizz(${i})" name="create-outline"></ion-icon>
+            </div>`
+        }
+    }
+
+    page += `<button onclick="sendInformationsQuestion()" class="create-button">Prosseguir pra criar níveis</button>`
+
 }

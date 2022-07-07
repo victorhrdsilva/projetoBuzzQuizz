@@ -18,12 +18,40 @@
         <div class="fixed-bar">
             <h1>QuizzBuzz</h1>
         </div>
-        <div class="quizz-list">
-            
+        <div class="quizz-list crate-quizz-information">
+            <div>
+                <h2>Crie suas perguntas</h2>
+            </div>
+            <div class="crate-quizz-information input">
+                <h2>Pergunta 1</h2>
+                <input id="question1" type="text" placeholder="Texto da pergunta">
+                <input id="question1-color" type="text" placeholder="Cor de fundo da pergunta">
+                <h2>Resposta correta</h2>
+                <input id="correct-answer" type="text" placeholder="Resposta correta">
+                <input id="correct-answer-image" type="url" placeholder="URL da imagem">
+                <h2>Respostas incorretas</h2>
+                <input id="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
+                <input id="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
+                <input class="space"  id="wrong-answer2" type="text" placeholder="Resposta incorreta 2">
+                <input id="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
+                <input class="space" id="wrong-answer3" type="text" placeholder="Resposta incorreta 3">
+                <input id="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
+            </div>
+            <div class="crate-quizz-information input closed">
+                <h2>Pergunta 2</h2>
+                <ion-icon name="create-outline"></ion-icon>
+            </div>
+            <div class="crate-quizz-information input closed">
+                <h2>Pergunta 3</h2>
+                <ion-icon name="create-outline"></ion-icon>
+            </div>
+            <button onclick="sendInformationsQuestion()" class="create-button">Prosseguir pra criar níveis</button>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./assets/script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./assets/script.js"></script> -->
 </body>
 
 </html>
