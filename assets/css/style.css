@@ -23,7 +23,7 @@ body {
     z-index: 4;
 }
 
-.container, .create-quizz, .quizz-image, .question-board, .question, .question-board-verify-answer, .buttons, .crate-quizz-information {
+.container, .create-quizz, .quizz-image, .question-board, .question, .question-board-verify-answer, .buttons, .crate-quizz-information, .open {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -271,20 +271,33 @@ body {
     margin-top: 85px;
 }
 
-.crate-quizz-information.closed{
-    flex-direction: row;
+.question-number {
+    display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
-.crate-quizz-information.input h2{
+.crate-quizz-information.input h2 {
     align-self: flex-start;
-    margin: 15px 0 12px 17px;
+    margin: 15px 0 20px 17px;
     font-size: 20px;
 }
 
-.crate-quizz-information ion-icon{
+.crate-quizz-information ion-icon {
     font-size: 30px;
+    margin: 7px 15px;
     cursor: pointer;
+}
+
+.closed {
+    height: 0;
+    overflow: hidden;
+    transition: all .5s ease;
+}
+
+.open {
+    height: 720px;
+    transition: all .5s ease;
 }
 
 .space {
