@@ -217,7 +217,7 @@ function sendInformationsQuizz() {
 // CRIAR QUESTÕES
 
 page.classList.add('crate-quizz-information')
-questionNumber = 5
+questionNumber = 3
 
 function createQuestions() {
     page.innerHTML = `
@@ -230,18 +230,18 @@ function createQuestions() {
                     <ion-icon onclick="openCreateQuizz(1)" name="create-outline"></ion-icon>
                 </div>
                 <div class="closed open">
-                    <input id="question" type="text" placeholder="Texto da pergunta">
-                    <input id="question-color" type="text" placeholder="Cor de fundo da pergunta">
+                    <input class="question" type="text" placeholder="Texto da pergunta">
+                    <input class="question-color" type="text" placeholder="Cor de fundo da pergunta">
                     <h2>Resposta correta</h2>
-                    <input id="correct-answer" type="text" placeholder="Resposta correta">
-                    <input id="correct-answer-image" type="url" placeholder="URL da imagem">
+                    <input class="correct-answer" type="text" placeholder="Resposta correta">
+                    <input class="correct-answer-image" type="url" placeholder="URL da imagem">
                     <h2>Respostas incorretas</h2>
-                    <input id="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
-                    <input id="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
-                    <input class="space" id="wrong-answer2" type="text" placeholder="Resposta incorreta 2">
-                    <input id="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
-                    <input class="space" id="wrong-answer3" type="text" placeholder="Resposta incorreta 3">
-                    <input id="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
+                    <input class="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
+                    <input class="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
+                    <input class="space wrong-answer2" type="text" placeholder="Resposta incorreta 2">
+                    <input class="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
+                    <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3">
+                    <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
                 </div>
             </div>
             <div class="crate-quizz-information input question2">
@@ -250,18 +250,18 @@ function createQuestions() {
                     <ion-icon onclick="openCreateQuizz(2)" name="create-outline"></ion-icon>
                 </div>
                 <div class="closed">
-                    <input id="question" type="text" placeholder="Texto da pergunta 2">
-                    <input id="question-color" type="text" placeholder="Cor de fundo da pergunta 2">
+                    <input class="question" type="text" placeholder="Texto da pergunta 2">
+                    <input class="question-color" type="text" placeholder="Cor de fundo da pergunta 2">
                     <h2>Resposta correta</h2>
-                    <input id="correct-answer" type="text" placeholder="Resposta correta">
-                    <input id="correct-answer-image" type="url" placeholder="URL da imagem">
+                    <input class="correct-answer" type="text" placeholder="Resposta correta">
+                    <input class="correct-answer-image" type="url" placeholder="URL da imagem">
                     <h2>Respostas incorretas</h2>
-                    <input id="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
-                    <input id="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
-                    <input class="space" id="wrong-answer2" type="text" placeholder="Resposta incorreta 2">
-                    <input id="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
-                    <input class="space" id="wrong-answer3" type="text" placeholder="Resposta incorreta 3">
-                    <input id="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
+                    <input class="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
+                    <input class="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
+                    <input class="space wrong-answer2" type="text" placeholder="Resposta incorreta 2">
+                    <input class="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
+                    <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3">
+                    <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
                 </div>
             </div>
             <div class="crate-quizz-information input question3">
@@ -270,18 +270,18 @@ function createQuestions() {
                     <ion-icon onclick="openCreateQuizz(3)" name="create-outline"></ion-icon>
                 </div>
                 <div class="closed">
-                    <input id="question" type="text" placeholder="Texto da pergunta 3">
-                    <input id="question-color" type="text" placeholder="Cor de fundo da pergunta 3">
+                    <input class="question" type="text" placeholder="Texto da pergunta 3">
+                    <input class="question-color" type="text" placeholder="Cor de fundo da pergunta 3">
                     <h2>Resposta correta</h2>
-                    <input id="correct-answer" type="text" placeholder="Resposta correta">
-                    <input id="correct-answer-image" type="url" placeholder="URL da imagem">
+                    <input class="correct-answer" type="text" placeholder="Resposta correta">
+                    <input class="correct-answer-image" type="url" placeholder="URL da imagem">
                     <h2>Respostas incorretas</h2>
-                    <input id="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
-                    <input id="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
-                    <input class="space" id="wrong-answer2" type="text" placeholder="Resposta incorreta 2">
-                    <input id="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
-                    <input class="space" id="wrong-answer3" type="text" placeholder="Resposta incorreta 3">
-                    <input id="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
+                    <input class="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
+                    <input class="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
+                    <input class="space wrong-answer2" type="text" placeholder="Resposta incorreta 2">
+                    <input class="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
+                    <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3">
+                    <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
                 </div>
             </div>
     `
@@ -295,23 +295,23 @@ function createQuestions() {
                     <ion-icon onclick="openCreateQuizz(${i})" name="create-outline"></ion-icon>
                 </div>
             <div class="closed">
-                <input id="question" type="text" placeholder="Texto da pergunta ${i}">
-                <input id="question-color" type="text" placeholder="Cor de fundo da pergunta ${i}">
+                <input class="question" type="text" placeholder="Texto da pergunta ${i}">
+                <input class="question-color" type="text" placeholder="Cor de fundo da pergunta ${i}">
                 <h2>Resposta correta</h2>
-                <input id="correct-answer" type="text" placeholder="Resposta correta">
-                <input id="correct-answer-image" type="url" placeholder="URL da imagem">
+                <input class="correct-answer" type="text" placeholder="Resposta correta">
+                <input class="correct-answer-image" type="url" placeholder="URL da imagem">
                 <h2>Respostas incorretas</h2>
-                <input id="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
-                <input id="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
-                <input class="space" id="wrong-answer2" type="text" placeholder="Resposta incorreta 2">
-                <input id="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
-                <input class="space" id="wrong-answer3" type="text" placeholder="Resposta incorreta 3">
-                <input id="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
+                <input class="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
+                <input class="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
+                <input class="space wrong-answer2" type="text" placeholder="Resposta incorreta 2">
+                <input class="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
+                <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3">
+                <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
             </div>`
         }
     }
 
-    page.innerHTML += `<button onclick="sendInformationsQuestion()" class="create-button">Prosseguir pra criar níveis</button>`
+    page.innerHTML += `<button onclick="sendQuestionToValidate()" class="create-button">Prosseguir pra criar níveis</button>`
 
 }
 
@@ -337,6 +337,7 @@ function isNotUndefined(value) {
 }
 
 function validateInformationQuestion(element) {
+    console.log(element)
     titleOfQuestion = element.querySelector('.question').value;
     colorOfQuestion = element.querySelector('.question-color').value;
     correctAnswer = element.querySelector('.correct-answer').value;
@@ -369,13 +370,83 @@ function validateInformationQuestion(element) {
 }
 
 function sendInformationsQuestion(numberOfWrongAnswer) {
-    objectQuestion
-
+    if (numberOfWrongAnswer === 1) {
+        objectQuestion.questions.push(`{
+            title: ${titleOfQuestion},
+            color: ${colorOfQuestion},
+            answers: [
+                {
+                    text: ${correctAnswer},
+                    image: ${correctAnswerImage},
+                    isCorrectAnswer: true
+                },
+                {
+                    text: ${wrongAnswer1},
+                    image: ${wrongAnswer1Image},
+                    isCorrectAnswer: false
+                }
+            ]`
+        )
+    } else if (numberOfWrongAnswer === 2) {
+        objectQuestion.questions.push(`{
+            title: ${titleOfQuestion},
+            color: ${colorOfQuestion},
+            answers: [
+                {
+                    text: ${correctAnswer},
+                    image: ${correctAnswerImage},
+                    isCorrectAnswer: true
+                },
+                {
+                    text: ${wrongAnswer1},
+                    image: ${wrongAnswer1Image},
+                    isCorrectAnswer: false
+                },
+                {
+                    text: ${wrongAnswer2},
+                    image: ${wrongAnswer2Image},
+                    isCorrectAnswer: false
+                }
+            ]`
+        )
+    } else if (numberOfWrongAnswer === 3) {
+        objectQuestion.questions.push(`{
+            title: ${titleOfQuestion},
+            color: ${colorOfQuestion},
+            answers: [
+                {
+                    text: ${correctAnswer},
+                    image: ${correctAnswerImage},
+                    isCorrectAnswer: true
+                },
+                {
+                    text: ${wrongAnswer1},
+                    image: ${wrongAnswer1Image},
+                    isCorrectAnswer: false
+                },
+                {
+                    text: ${wrongAnswer2},
+                    image: ${wrongAnswer2Image},
+                    isCorrectAnswer: false
+                },
+                {
+                    text: ${wrongAnswer3},
+                    image: ${wrongAnswer3Image},
+                    isCorrectAnswer: false
+                }
+            ]`
+        )
+    }
+    console.log(objectQuestion)
 }
 
 function sendQuestionToValidate() {
-    for (let i = 1; i <= questionNumber.length; i++) {
-        let questionToValidate = document.querySelector(`question${i}`)
+    console.log('entrou')
+    for (let i = 1; i <= questionNumber; i++) {
+        console.log('entrou3')
+        let validateQuestionNumber = "question"
+        let questionToValidate = document.querySelector(`.question${i}`)
+        console.log(questionToValidate)
         validateInformationQuestion(questionToValidate)
     }
 }
