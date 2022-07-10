@@ -224,78 +224,16 @@ function createQuestions() {
             <div>
                 <h2>Crie suas perguntas</h2>
             </div>
-            <div class="crate-quizz-information input question1">
-                <div class="question-number">
-                    <h2>Pergunta 1</h2>
-                    <ion-icon onclick="openCreateQuizz(1)" name="create-outline"></ion-icon>
-                </div>
-                <div class="closed open">
-                    <input class="question" type="text" placeholder="Texto da pergunta">
-                    <input class="question-color" type="text" placeholder="Cor de fundo da pergunta">
-                    <h2>Resposta correta</h2>
-                    <input class="correct-answer" type="text" placeholder="Resposta correta">
-                    <input class="correct-answer-image" type="url" placeholder="URL da imagem">
-                    <h2>Respostas incorretas</h2>
-                    <input class="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
-                    <input class="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
-                    <input class="space wrong-answer2" type="text" placeholder="Resposta incorreta 2">
-                    <input class="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
-                    <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3">
-                    <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
-                </div>
-            </div>
-            <div class="crate-quizz-information input question2">
-                <div class="question-number">
-                    <h2>Pergunta 2</h2>
-                    <ion-icon onclick="openCreateQuizz(2)" name="create-outline"></ion-icon>
-                </div>
-                <div class="closed">
-                    <input class="question" type="text" placeholder="Texto da pergunta 2">
-                    <input class="question-color" type="text" placeholder="Cor de fundo da pergunta 2">
-                    <h2>Resposta correta</h2>
-                    <input class="correct-answer" type="text" placeholder="Resposta correta">
-                    <input class="correct-answer-image" type="url" placeholder="URL da imagem">
-                    <h2>Respostas incorretas</h2>
-                    <input class="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
-                    <input class="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
-                    <input class="space wrong-answer2" type="text" placeholder="Resposta incorreta 2">
-                    <input class="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
-                    <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3">
-                    <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
-                </div>
-            </div>
-            <div class="crate-quizz-information input question3">
-                <div class="question-number">
-                    <h2>Pergunta 3</h2>
-                    <ion-icon onclick="openCreateQuizz(3)" name="create-outline"></ion-icon>
-                </div>
-                <div class="closed">
-                    <input class="question" type="text" placeholder="Texto da pergunta 3">
-                    <input class="question-color" type="text" placeholder="Cor de fundo da pergunta 3">
-                    <h2>Resposta correta</h2>
-                    <input class="correct-answer" type="text" placeholder="Resposta correta">
-                    <input class="correct-answer-image" type="url" placeholder="URL da imagem">
-                    <h2>Respostas incorretas</h2>
-                    <input class="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
-                    <input class="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
-                    <input class="space wrong-answer2" type="text" placeholder="Resposta incorreta 2">
-                    <input class="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
-                    <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3">
-                    <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
-                </div>
-            </div>
     `
-
-    if (questionNumber > 3) {
-        for (let i = 4; i <= questionNumber; i++) {
-            page.innerHTML += `
+    for (let i = 1; i <= questionNumber; i++) {
+        page.innerHTML += `
             <div class="crate-quizz-information input question${i}">
                 <div class="question-number">
                     <h2>Pergunta ${i}</h2>
                     <ion-icon onclick="openCreateQuizz(${i})" name="create-outline"></ion-icon>
                 </div>
             <div class="closed">
-                <input class="question" type="text" placeholder="Texto da pergunta ${i}">
+                <input class="question-text" type="text" placeholder="Texto da pergunta ${i}">
                 <input class="question-color" type="text" placeholder="Cor de fundo da pergunta ${i}">
                 <h2>Resposta correta</h2>
                 <input class="correct-answer" type="text" placeholder="Resposta correta">
@@ -308,70 +246,69 @@ function createQuestions() {
                 <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3">
                 <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
             </div>`
+    }
+        page.innerHTML += `<button onclick="sendQuestionToValidate()" class="create-button">Prosseguir pra criar níveis</button>`
+
+    }
+
+    function openCreateQuizz(numberOfQuestion) {
+        let questionOpened = document.querySelector('.open')
+        let questionToOpen = document.querySelector(`.question${numberOfQuestion}`).querySelector('.closed');
+        if (isNotUndefined(questionOpened) && questionOpened != questionToOpen) {
+            questionOpened.classList.remove('open')
         }
+        questionToOpen.classList.add('open');
     }
 
-    page.innerHTML += `<button onclick="sendQuestionToValidate()" class="create-button">Prosseguir pra criar níveis</button>`
+    // VALIDAR E CRIAR O OBJETO DO QUIZZ
 
-}
+    let titleOfQuestion, colorOfQuestion, correctAnswer, correctAnswerImage, wrongAnswer1, wrongAnswer1Image, wrongAnswer2, wrongAnswer2Image, wrongAnswer3, wrongAnswer3Image
 
-function openCreateQuizz(number) {
-    let questionOpened = document.querySelector('.open')
-    let questionToOpen = document.querySelector(`.question${number}`).querySelector('.closed');
-    if (questionOpened != undefined && questionOpened != questionToOpen) {
-        questionOpened.classList.remove('open')
+    function isAHexadecimal(hexadecimal) {
+        return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hexadecimal);
     }
-    questionToOpen.classList.add('open');
-}
 
-// VALIDAR E CRIAR O OBJETO DO QUIZZ
+    function isNotUndefined(value) {
+        return value !== undefined && value != "" && value !== null
+    }
 
-let titleOfQuestion, colorOfQuestion, correctAnswer, correctAnswerImage, wrongAnswer1, wrongAnswer1Image, wrongAnswer2, wrongAnswer2Image, wrongAnswer3, wrongAnswer3Image
+    function validateInformationQuestion(element) {
+        titleOfQuestion = element.querySelector('.question-text').value;
+        colorOfQuestion = element.querySelector('.question-color').value;
+        correctAnswer = element.querySelector('.correct-answer').value;
+        correctAnswerImage = element.querySelector('.correct-answer-image').value;
+        wrongAnswer1 = element.querySelector('.wrong-answer1').value;
+        wrongAnswer1Image = element.querySelector('.wrong-answer1-image').value;
+        wrongAnswer2 = element.querySelector('.wrong-answer2').value;
+        wrongAnswer2Image = element.querySelector('.wrong-answer2-image').value;
+        wrongAnswer3 = element.querySelector('.wrong-answer3').value;
+        wrongAnswer3Image = element.querySelector('.wrong-answer3-image').value;
 
-function isAHexadecimal(hexadecimal) {
-    return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hexadecimal);
-}
-
-function isNotUndefined(value) {
-    return value !== undefined
-}
-
-function validateInformationQuestion(element) {
-    console.log(element)
-    titleOfQuestion = element.querySelector('.question').value;
-    colorOfQuestion = element.querySelector('.question-color').value;
-    correctAnswer = element.querySelector('.correct-answer').value;
-    correctAnswerImage = element.querySelector('.correct-answer-image').value;
-    wrongAnswer1 = element.querySelector('.wrong-answer1').value;
-    wrongAnswer1Image = element.querySelector('.wrong-answer1-image').value;
-    wrongAnswer2 = element.querySelector('.wrong-answer2').value;
-    wrongAnswer2Image = element.querySelector('.wrong-answer2-image').value;
-    wrongAnswer3 = element.querySelector('.wrong-answer3').value;
-    wrongAnswer3Image = element.querySelector('.wrong-answer3-image').value;
-
-    if (isNotUndefined(titleOfQuestion) && isNotUndefined(colorOfQuestion) && isNotUndefined(correctAnswer) && isNotUndefined(wrongAnswer1) && isNotUndefined(correctAnswerImage) && isNotUndefined(wrongAnswer1Image)) {
-        if (titleOfQuestion >= 20 && isAHexadecimal(colorOfQuestion) && checkUrl(correctAnswerImage) && checkUrl(wrongAnswer1Image)) {
-            if (wrongAnswer2 == undefined && wrongAnswer2Image == undefined && wrongAnswer3 == undefined && wrongAnswer3Image == undefined) {
-                sendInformationsQuestion(1);
-            } else if (isNotUndefined(wrongAnswer2) && isNotUndefined(wrongAnswer2Image) && checkUrl(wrongAnswer2Image)) {
-                if (wrongAnswer2 == undefined) {
-                    sendInformationsQuestion(2);
-                } else if (isNotUndefined(wrongAnswer3) && isNotUndefined(wrongAnswer3Image) && checkUrl(wrongAnswer3Image)) {
-                    sendInformationsQuestion(3);
+        if (isNotUndefined(titleOfQuestion) && isNotUndefined(colorOfQuestion) && isNotUndefined(correctAnswer) && isNotUndefined(wrongAnswer1) && isNotUndefined(correctAnswerImage) && isNotUndefined(wrongAnswer1Image)) {
+            if (titleOfQuestion >= 20 && isAHexadecimal(colorOfQuestion) && checkUrl(correctAnswerImage) && checkUrl(wrongAnswer1Image)) {
+                if (wrongAnswer2 == undefined && wrongAnswer2Image == undefined && wrongAnswer3 == undefined && wrongAnswer3Image == undefined) {
+                    sendInformationsQuestion(1);
+                } else if (isNotUndefined(wrongAnswer2) && isNotUndefined(wrongAnswer2Image) && checkUrl(wrongAnswer2Image)) {
+                    if (wrongAnswer2 == undefined) {
+                        sendInformationsQuestion(2);
+                    } else if (isNotUndefined(wrongAnswer3) && isNotUndefined(wrongAnswer3Image) && checkUrl(wrongAnswer3Image)) {
+                        sendInformationsQuestion(3);
+                    }
+                } else {
+                    alert("Preencha os dados corretamente para continuar")
+                    return false
                 }
-            } else {
-                alert("Preencha os dados corretamente para continuar")
             }
+        } else {
+            alert("Preencha todos os dados para continuar");
+            return false
         }
-    } else {
-        alert("Preencha todos os dados para continuar");
+
     }
 
-}
-
-function sendInformationsQuestion(numberOfWrongAnswer) {
-    if (numberOfWrongAnswer === 1) {
-        objectQuestion.questions.push(`{
+    function sendInformationsQuestion(numberOfWrongAnswer) {
+        if (numberOfWrongAnswer === 1) {
+            objectQuestion.questions.push(`{
             title: ${titleOfQuestion},
             color: ${colorOfQuestion},
             answers: [
@@ -386,9 +323,9 @@ function sendInformationsQuestion(numberOfWrongAnswer) {
                     isCorrectAnswer: false
                 }
             ]`
-        )
-    } else if (numberOfWrongAnswer === 2) {
-        objectQuestion.questions.push(`{
+            )
+        } else if (numberOfWrongAnswer === 2) {
+            objectQuestion.questions.push(`{
             title: ${titleOfQuestion},
             color: ${colorOfQuestion},
             answers: [
@@ -408,9 +345,9 @@ function sendInformationsQuestion(numberOfWrongAnswer) {
                     isCorrectAnswer: false
                 }
             ]`
-        )
-    } else if (numberOfWrongAnswer === 3) {
-        objectQuestion.questions.push(`{
+            )
+        } else if (numberOfWrongAnswer === 3) {
+            objectQuestion.questions.push(`{
             title: ${titleOfQuestion},
             color: ${colorOfQuestion},
             answers: [
@@ -435,21 +372,22 @@ function sendInformationsQuestion(numberOfWrongAnswer) {
                     isCorrectAnswer: false
                 }
             ]`
-        )
+            )
+        }
+        console.log(objectQuestion)
     }
-    console.log(objectQuestion)
-}
 
-function sendQuestionToValidate() {
-    console.log('entrou')
-    for (let i = 1; i <= questionNumber; i++) {
-        console.log('entrou3')
-        let validateQuestionNumber = "question"
-        let questionToValidate = document.querySelector(`.question${i}`)
-        console.log(questionToValidate)
-        validateInformationQuestion(questionToValidate)
+    function sendQuestionToValidate() {
+        console.log('entrou')
+        for (let i = 1; i <= questionNumber; i++) {
+            console.log('entrou3')
+            let validateQuestionNumber = "question"
+            let questionToValidate = document.querySelector(`.question${i}`)
+            if (validateInformationQuestion(questionToValidate) == false) {
+                break
+            }
+        }
     }
-}
 
-createQuestions()
+    createQuestions()
 
