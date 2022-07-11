@@ -307,6 +307,7 @@ function createQuestions() {
     }
 
     function sendInformationsQuestion(numberOfWrongAnswer) {
+        console.log("as informações estavam certas")
         if (numberOfWrongAnswer === 1) {
             objectQuestion.questions.push(`{
             title: ${titleOfQuestion},
