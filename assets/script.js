@@ -12,7 +12,7 @@ let page = document.querySelector(".quizz-list")
 // quizzes.then(loadQuizzList)
 
 
-
+// CARREGA TODOS OS QUIZZES NA API
 // function loadQuizzList(quizz) {
 //     quizzData = quizz.data
 
@@ -168,7 +168,7 @@ let page = document.querySelector(".quizz-list")
 
 // // CRIAR QUIZZ 
 
-let title, urlImage, questionNumber, questionNivel
+let title, urlImage, questionNumber, questionLevels
 
 // function createQuizz() {
 //     page.classList.add('crate-quizz-information')
@@ -180,7 +180,7 @@ let title, urlImage, questionNumber, questionNivel
 //         <input id="title" type="url" placeholder="Título do seu quizz">
 //         <input id="url-image" type="text" placeholder="URL da imagem do seu quizz">
 //         <input id="question-number" type="number" placeholder="Quantidade de perguntas do quizz">
-//         <input id="question-nivel" type="number" placeholder="Quantidade de níveis do quizz">
+//         <input id="question-level" type="number" placeholder="Quantidade de níveis do quizz">
 //     </div>
 //     <button onclick="sendInformationsQuizz()" class="create-button">Prosseguir pra criar perguntas</button>`
 // }
@@ -197,12 +197,12 @@ function checkUrl(string) {
 function sendInformationsQuizz() {
     title = document.getElementById('title').value;
     urlImage = document.getElementById('url-image').value;
-    questionNivel = document.getElementById('question-nivel').value;
+    questionLevels = document.getElementById('question-level').value;
     questionNumber = document.getElementById('question-number').value;
 
 
-    if (title != undefined && urlImage != undefined && questionNumber != undefined && questionNivel != undefined) {
-        if (title.length > 20 && title.length < 65 && checkUrl(urlImage) && questionNumber >= 3 && questionNivel >= 2) {
+    if (title != undefined && urlImage != undefined && questionNumber != undefined && questionLevel != undefined) {
+        if (title.length > 20 && title.length < 65 && checkUrl(urlImage) && questionNumber >= 3 && questionLevel >= 2) {
             objectQuestion.title = title;
             objectQuestion.image = urlImage;
             createQuestions()
@@ -218,6 +218,7 @@ function sendInformationsQuizz() {
 
 page.classList.add('crate-quizz-information')
 questionNumber = 3
+questionLevels = 2
 
 function createQuestions() {
     page.innerHTML = `
@@ -233,162 +234,239 @@ function createQuestions() {
                     <ion-icon onclick="openCreateQuizz(${i})" name="create-outline"></ion-icon>
                 </div>
             <div class="closed">
-                <input class="question-text" type="text" placeholder="Texto da pergunta ${i}">
-                <input class="question-color" type="text" placeholder="Cor de fundo da pergunta ${i}">
+                <input class="question-text" type="text" placeholder="Texto da pergunta ${i}" value="Qual a sua casa no mundo de Harry Potter?">
+                <input class="question-color" type="text" placeholder="Cor de fundo da pergunta ${i}" value="#10403B">
                 <h2>Resposta correta</h2>
-                <input class="correct-answer" type="text" placeholder="Resposta correta">
-                <input class="correct-answer-image" type="url" placeholder="URL da imagem">
+                <input class="correct-answer" type="text" placeholder="Resposta correta" value="É essa correta">
+                <input class="correct-answer-image" type="url" placeholder="URL da imagem" value="https://todateen.com.br/wp-content/uploads/2017/10/casas-Hogwarts-brasao.jpg">
                 <h2>Respostas incorretas</h2>
-                <input class="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
-                <input class="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
-                <input class="space wrong-answer2" type="text" placeholder="Resposta incorreta 2">
-                <input class="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
-                <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3">
-                <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
+                <input class="wrong-answer1" type="text" placeholder="Resposta incorreta 1" value="É essa errada">
+                <input class="wrong-answer1-image" type="url" placeholder="URL da imagem 1" value="https://todateen.com.br/wp-content/uploads/2017/10/casas-Hogwarts-brasao.jpg">
+                <input class="space wrong-answer2" type="text" placeholder="Resposta incorreta 2" value="É essa errada" >
+                <input class="wrong-answer2-image" type="url" placeholder="URL da imagem 2" value="https://todateen.com.br/wp-content/uploads/2017/10/casas-Hogwarts-brasao.jpg">
+                <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3" value="É essa errada">
+                <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3" value="https://todateen.com.br/wp-content/uploads/2017/10/casas-Hogwarts-brasao.jpg">
             </div>`
     }
-        page.innerHTML += `<button onclick="sendQuestionToValidate()" class="create-button">Prosseguir pra criar níveis</button>`
+    page.innerHTML += `<button onclick="sendQuestionToValidate()" class="create-button">Prosseguir pra criar níveis</button>`
 
+}
+
+function openCreateQuizz(numberOfQuestion) {
+    let questionOpened = document.querySelector('.open')
+    let questionToOpen = document.querySelector(`.question${numberOfQuestion}`).querySelector('.closed');
+    if (isNotUndefined(questionOpened) && questionOpened != questionToOpen) {
+        questionOpened.classList.remove('open')
     }
+    questionToOpen.classList.add('open');
+}
 
-    function openCreateQuizz(numberOfQuestion) {
-        let questionOpened = document.querySelector('.open')
-        let questionToOpen = document.querySelector(`.question${numberOfQuestion}`).querySelector('.closed');
-        if (isNotUndefined(questionOpened) && questionOpened != questionToOpen) {
-            questionOpened.classList.remove('open')
-        }
-        questionToOpen.classList.add('open');
-    }
+// VALIDAR E CRIAR O OBJETO DO QUIZZ
 
-    // VALIDAR E CRIAR O OBJETO DO QUIZZ
+let titleOfQuestion, colorOfQuestion, correctAnswer, correctAnswerImage, wrongAnswer1, wrongAnswer1Image, wrongAnswer2, wrongAnswer2Image, wrongAnswer3, wrongAnswer3Image
 
-    let titleOfQuestion, colorOfQuestion, correctAnswer, correctAnswerImage, wrongAnswer1, wrongAnswer1Image, wrongAnswer2, wrongAnswer2Image, wrongAnswer3, wrongAnswer3Image
+function isAHexadecimal(hexadecimal) {
+    return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hexadecimal);
+}
 
-    function isAHexadecimal(hexadecimal) {
-        return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hexadecimal);
-    }
+function isNotUndefined(value) {
+    return value !== undefined && value != "" && value !== null
+}
 
-    function isNotUndefined(value) {
-        return value !== undefined && value != "" && value !== null
-    }
+function validateInformationQuestion(element) {
+    titleOfQuestion = element.querySelector('.question-text').value;
+    colorOfQuestion = element.querySelector('.question-color').value;
+    correctAnswer = element.querySelector('.correct-answer').value;
+    correctAnswerImage = element.querySelector('.correct-answer-image').value;
+    wrongAnswer1 = element.querySelector('.wrong-answer1').value;
+    wrongAnswer1Image = element.querySelector('.wrong-answer1-image').value;
+    wrongAnswer2 = element.querySelector('.wrong-answer2').value;
+    wrongAnswer2Image = element.querySelector('.wrong-answer2-image').value;
+    wrongAnswer3 = element.querySelector('.wrong-answer3').value;
+    wrongAnswer3Image = element.querySelector('.wrong-answer3-image').value;
 
-    function validateInformationQuestion(element) {
-        titleOfQuestion = element.querySelector('.question-text').value;
-        colorOfQuestion = element.querySelector('.question-color').value;
-        correctAnswer = element.querySelector('.correct-answer').value;
-        correctAnswerImage = element.querySelector('.correct-answer-image').value;
-        wrongAnswer1 = element.querySelector('.wrong-answer1').value;
-        wrongAnswer1Image = element.querySelector('.wrong-answer1-image').value;
-        wrongAnswer2 = element.querySelector('.wrong-answer2').value;
-        wrongAnswer2Image = element.querySelector('.wrong-answer2-image').value;
-        wrongAnswer3 = element.querySelector('.wrong-answer3').value;
-        wrongAnswer3Image = element.querySelector('.wrong-answer3-image').value;
 
-        if (isNotUndefined(titleOfQuestion) && isNotUndefined(colorOfQuestion) && isNotUndefined(correctAnswer) && isNotUndefined(wrongAnswer1) && isNotUndefined(correctAnswerImage) && isNotUndefined(wrongAnswer1Image)) {
-            if (titleOfQuestion >= 20 && isAHexadecimal(colorOfQuestion) && checkUrl(correctAnswerImage) && checkUrl(wrongAnswer1Image)) {
-                if (wrongAnswer2 == undefined && wrongAnswer2Image == undefined && wrongAnswer3 == undefined && wrongAnswer3Image == undefined) {
-                    sendInformationsQuestion(1);
-                } else if (isNotUndefined(wrongAnswer2) && isNotUndefined(wrongAnswer2Image) && checkUrl(wrongAnswer2Image)) {
-                    if (wrongAnswer2 == undefined) {
-                        sendInformationsQuestion(2);
-                    } else if (isNotUndefined(wrongAnswer3) && isNotUndefined(wrongAnswer3Image) && checkUrl(wrongAnswer3Image)) {
-                        sendInformationsQuestion(3);
-                    }
-                } else {
-                    alert("Preencha os dados corretamente para continuar")
-                    return false
+    if (isNotUndefined(titleOfQuestion) && isNotUndefined(colorOfQuestion) && isNotUndefined(correctAnswer) && isNotUndefined(wrongAnswer1) && isNotUndefined(correctAnswerImage) && isNotUndefined(wrongAnswer1Image)) {
+        if (titleOfQuestion.length >= 20 && isAHexadecimal(colorOfQuestion) && checkUrl(correctAnswerImage) && checkUrl(wrongAnswer1Image)) {
+            if (wrongAnswer2 == undefined && wrongAnswer2Image == undefined && wrongAnswer3 == undefined && wrongAnswer3Image == undefined) {
+                sendInformationsQuestion(1);
+            } else if (isNotUndefined(wrongAnswer2) && isNotUndefined(wrongAnswer2Image) && checkUrl(wrongAnswer2Image)) {
+                if (wrongAnswer2 == undefined) {
+                    sendInformationsQuestion(2);
+                } else if (isNotUndefined(wrongAnswer3) && isNotUndefined(wrongAnswer3Image) && checkUrl(wrongAnswer3Image)) {
+                    sendInformationsQuestion(3);
                 }
             }
         } else {
-            alert("Preencha todos os dados para continuar");
+            alert("Preencha os dados corretamente para continuar")
             return false
         }
-
+    } else {
+        alert("Preencha todos os dados para continuar");
+        return false
     }
 
-    function sendInformationsQuestion(numberOfWrongAnswer) {
-        console.log("as informações estavam certas")
-        if (numberOfWrongAnswer === 1) {
-            objectQuestion.questions.push(`{
-            title: ${titleOfQuestion},
-            color: ${colorOfQuestion},
+}
+
+function sendInformationsQuestion(numberOfWrongAnswer) {
+    if (numberOfWrongAnswer === 1) {
+        objectQuestion.questions.push({
+            title: titleOfQuestion,
+            color: colorOfQuestion,
             answers: [
                 {
-                    text: ${correctAnswer},
-                    image: ${correctAnswerImage},
+                    text: correctAnswer,
+                    image: correctAnswerImage,
                     isCorrectAnswer: true
                 },
                 {
-                    text: ${wrongAnswer1},
-                    image: ${wrongAnswer1Image},
+                    text: wrongAnswer1,
+                    image: wrongAnswer1Image,
                     isCorrectAnswer: false
                 }
-            ]`
-            )
-        } else if (numberOfWrongAnswer === 2) {
-            objectQuestion.questions.push(`{
-            title: ${titleOfQuestion},
-            color: ${colorOfQuestion},
-            answers: [
-                {
-                    text: ${correctAnswer},
-                    image: ${correctAnswerImage},
-                    isCorrectAnswer: true
-                },
-                {
-                    text: ${wrongAnswer1},
-                    image: ${wrongAnswer1Image},
-                    isCorrectAnswer: false
-                },
-                {
-                    text: ${wrongAnswer2},
-                    image: ${wrongAnswer2Image},
-                    isCorrectAnswer: false
-                }
-            ]`
-            )
-        } else if (numberOfWrongAnswer === 3) {
-            objectQuestion.questions.push(`{
-            title: ${titleOfQuestion},
-            color: ${colorOfQuestion},
-            answers: [
-                {
-                    text: ${correctAnswer},
-                    image: ${correctAnswerImage},
-                    isCorrectAnswer: true
-                },
-                {
-                    text: ${wrongAnswer1},
-                    image: ${wrongAnswer1Image},
-                    isCorrectAnswer: false
-                },
-                {
-                    text: ${wrongAnswer2},
-                    image: ${wrongAnswer2Image},
-                    isCorrectAnswer: false
-                },
-                {
-                    text: ${wrongAnswer3},
-                    image: ${wrongAnswer3Image},
-                    isCorrectAnswer: false
-                }
-            ]`
-            )
+            ]
         }
-        console.log(objectQuestion)
+        )
+    } else if (numberOfWrongAnswer === 2) {
+        objectQuestion.questions.push({
+            title: titleOfQuestion,
+            color: colorOfQuestion,
+            answers: [
+                {
+                    text: correctAnswer,
+                    image: correctAnswerImage,
+                    isCorrectAnswer: true
+                },
+                {
+                    text: wrongAnswer1,
+                    image: wrongAnswer1Image,
+                    isCorrectAnswer: false
+                },
+                {
+                    text: wrongAnswer2,
+                    image: wrongAnswer2Image,
+                    isCorrectAnswer: false
+                }
+            ]
+        }
+        )
+    } else if (numberOfWrongAnswer === 3) {
+        objectQuestion.questions.push({
+            title: titleOfQuestion,
+            color: colorOfQuestion,
+            answers: [
+                {
+                    text: correctAnswer,
+                    image: correctAnswerImage,
+                    isCorrectAnswer: true
+                },
+                {
+                    text: wrongAnswer1,
+                    image: wrongAnswer1Image,
+                    isCorrectAnswer: false
+                },
+                {
+                    text: wrongAnswer2,
+                    image: wrongAnswer2Image,
+                    isCorrectAnswer: false
+                },
+                {
+                    text: wrongAnswer3,
+                    image: wrongAnswer3Image,
+                    isCorrectAnswer: false
+                }
+            ]
+        }
+        )
+    }
+}
+
+function sendQuestionToValidate() {
+    for (let i = 1; i <= questionNumber; i++) {
+        let questionToValidate = document.querySelector(`.question${i}`)
+        if (validateInformationQuestion(questionToValidate) == false) {
+            break
+        }
+    }
+    createLevels()
+}
+
+// CRIA OS NÍVEIS DO QUIZZ
+
+function createLevels() {
+    page.innerHTML = `
+            <div>
+                <h2>Agora, decida os níveis</h2>
+            </div>
+    `
+    for (let i = 1; i <= questionLevels; i++) {
+        page.innerHTML += `
+        <div class="crate-quizz-information input level${i}">
+            <div class="question-number">
+                <h2>Nivel ${i}</h2>
+                <ion-icon onclick="openCreateQuizz(${i})" name="create-outline"></ion-icon>
+            </div>
+            <div class="closed level">
+                <input class="level-title" type="text" placeholder="Título do nível"
+                    value="Você é ótimo em Harry Potter?">
+                <input class="min-hit-percentage" type="text" placeholder="% de acerto mínima"
+                    value="100">
+                <input class="url-image-level" type="url" placeholder="URL da imagem do nível"
+                    value="https://todateen.com.br/wp-content/uploads/2017/10/casas-Hogwarts-brasao.jpg">
+                <input class="level-description" type="text" placeholder="Descrição do nível" value="Você superou tudoooooooooooooooo, parabens por fazer sua obrigação">
+            </div>
+        </div>`
+    }
+    page.innerHTML += `<button onclick="sendLevelsToValidate()" class="create-button">Prosseguir pra criar níveis</button>`
+}
+
+// VALIDAR INFORMAÇÕES DE NÍVEIS
+
+let levelTitle, minHitPercentage, urlImageLevel, levelDescription;
+let verifyLevelWith0Percent = false;
+
+function verifyLevel0Percent(element) {
+    minHitPercentage = element.querySelector('.min-hit-percentage').value;
+    if (minHitPercentage == 0) {
+        verifyLevelWith0Percent = true;
+    }
+}
+
+function validateInformationLevels(element) {
+    levelTitle = element.querySelector('.level-title').value;
+    minHitPercentage = element.querySelector('.min-hit-percentage').value;
+    urlImageLevel = element.querySelector('.url-image-level').value;
+    levelDescription = element.querySelector('.level-description').value;
+
+    if (isNotUndefined(levelTitle) && isNotUndefined(levelDescription) && isNotUndefined(urlImageLevel) && isNotUndefined(minHitPercentage)) {
+        if (levelTitle.length >= 10 && minHitPercentage >= 0 && minHitPercentage <= 100 && checkUrl(urlImageLevel) && levelDescription.length >= 30) {
+            sendInformationsLevel()
+        } else {
+            alert("Preencha todos os dados corretamente para continuar");
+            return false
+        }
+    } else {
+        alert("Preencha todos os dados para continuar");
+        return false
+    }
+}
+
+function sendLevelToValidate() {
+    for (let i = 1; i <= questionLevels; i++) {
+        let levelToValidate = document.querySelector(`.level${i}`)
+
     }
 
-    function sendQuestionToValidate() {
-        console.log('entrou')
-        for (let i = 1; i <= questionNumber; i++) {
-            console.log('entrou3')
-            let validateQuestionNumber = "question"
-            let questionToValidate = document.querySelector(`.question${i}`)
-            if (validateInformationQuestion(questionToValidate) == false) {
+    if (verifyLevelWith0Percent) {
+        for (let i = 1; i < questionLevels; i++) {
+            let levelToValidate = document.querySelector(`.level${i}`)
+
+            if (validateInformationLevels(levelToValidate) == false) {
                 break
             }
         }
     }
 
-    createQuestions()
+}
 
+createQuestions()
