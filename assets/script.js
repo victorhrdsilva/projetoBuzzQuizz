@@ -9,7 +9,7 @@ let objectQuestion = {
 }
 const listSerialization = localStorage.getItem("listIDQuizzesOfUser")
 let listIDQuizzesOfUser = JSON.parse(listSerialization)
-let linkQuizzes = 'https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes'
+let linkQuizzes = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes'
 let quizzes = axios.get(linkQuizzes);
 let page = document.querySelector(".quizz-list")
 quizzes.then(loadQuizzList)
