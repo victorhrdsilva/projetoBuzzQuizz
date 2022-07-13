@@ -4,186 +4,222 @@ let points = 0
 let objectQuestion = {
     title: '',
     image: '',
-    questions: []
+    questions: [],
+    levels: []
 }
-// let linkQuizzes = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes'
-// let quizzes = axios.get(linkQuizzes);
+const listSerialization = localStorage.getItem("listIDQuizzesOfUser")
+let listIDQuizzesOfUser = JSON.parse(listSerialization)
+let linkQuizzes = 'https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes'
+let quizzes = axios.get(linkQuizzes);
 let page = document.querySelector(".quizz-list")
-// quizzes.then(loadQuizzList)
+quizzes.then(loadQuizzList)
 
 
 // CARREGA TODOS OS QUIZZES NA API
-// function loadQuizzList(quizz) {
-//     quizzData = quizz.data
 
-//     page.innerHTML = `
-//     <div class="create-quizz">
-//         <p>Você não criou nenhum quizz ainda :(</p>
-//         <button onclick="createQuizz()">Criar Quizz</button>
-//     </div>
-//     <div class="all-quizzes">
-//         <h2>Todos os Quizzes</h2>
-//         <div class="row-quizzes">
-
-//         </div>
-//     </div>
-//         `
-//     for (let i = 0; i < quizzData.length; i++) {
-//         let rowQuizzes = document.querySelector(".row-quizzes")
-//         let currentQuizz = quizzData[i]
-//         rowQuizzes.innerHTML += `
-//         <div onclick="loadQuizzWithID(this)" class="${currentQuizz.id} quizz" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), url('${currentQuizz.image}');">
-//             <p>${currentQuizz.title}</p>
-//         </div>
-//         `
-//     }
-// }
-
-// function loadQuizzWithID(element) {
-//     id = element.classList[0]
-//     singleQuizz = axios.get(`${linkQuizzes}/${id}`)
-//     singleQuizz.then(loadPageOfSingleQuizz)
-// }
+function loadQuizzList(quizz) {
+    quizzData = quizz.data
 
 
-// function comparator() {
-//     return Math.random() - 0.5;
-// }
+    if (isNotUndefined(listIDQuizzesOfUser)) {
+        page.innerHTML = `
+        <div class="all-quizzes">
+        <div class="title-quizzes-user">
+            <h2>Seus Quizzes</h2>
+            <ion-icon onclick="createQuizz()" name="add-circle"></ion-icon>
+        </div>
+        <div class="row-quizzes row-quizzes-user">
 
-// function loadPageOfSingleQuizz(element) {
-//     questions = element.data.questions
-//     levels = element.data.levels
-//     page.innerHTML = `
-//     <div class="quizz-image" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.57), rgba(0, 0, 0, 0.57)), url('${element.data.image}')">
-//         <p>${element.data.title}</p>
-//     </div>`
-//     for (let i = 0; i < questions.length; i++) {
-//         let question = questions[i]
-//         let answers = question.answers
-//         answers.sort(comparator);
-//         page.innerHTML += `
-//         <div class="question-board">
-//             <div class="question" style="background-color: ${question.color};">
-//                 <p>${question.title}</p>
-//             </div>
-//             <div class="question${i} options-board">
-//                 <div class="question-board-verify-answer hidden">
-//                 </div>
-//             </div>
-//             <div class="pending">
-//             </div>
-//         </div>`
-//         optionsBoard = document.querySelector(`.question${i}`)
-//         for (let j = 0; j < answers.length; j++) {
-//             let answer = answers[j]
-//             optionsBoard.innerHTML += `
-//             <div class="${answer.isCorrectAnswer} option" onclick="selectOption(this)">
-//                 <img src="${answer.image}">
-//                 <p>${answer.text}</p>
-//             </div>`
-//         }
-//     }
-//     document.querySelector('.quizz-image').scrollIntoView({ block: "start", behavior: "smooth" });
-// }
+        </div>
+        </div>
+        `
+    } else {
+        page.innerHTML = `
+        <div class="create-quizz">
+            <p>Você não criou nenhum quizz ainda :(</p>
+            <button onclick="createQuizz()">Criar Quizz</button>
+        </div>
+        `
+    }
 
-// function selectOption(element) {
-//     verifySelected = element.classList.contains('selected');
-//     if (!verifySelected) {
-//         totalClicks++;
-//     }
+    page.innerHTML += `
+    <div class="all-quizzes">
+        <h2>Todos os Quizzes</h2>
+        <div class="row-quizzes row-quizzes-all">
 
-//     element.classList.add('selected')
-//     let parentElement = element.parentNode
-//     parentElement.querySelector('.hidden').classList.remove('hidden')
-//     let optionsFalse = parentElement.querySelectorAll('.false')
-//     for (let i = 0; i < optionsFalse.length; i++) {
-//         optionsFalse[i].classList.add('color')
-//     }
-//     parentElement.querySelector('.true').classList.add('color')
+        </div>
+    </div>
+    `
 
-//     let verifyCorrectAnswer = element.classList.contains('true');
-//     if (verifyCorrectAnswer) {
-//         points++;
-//     };
+    for (let i = 0; i < quizzData.length; i++) {
+        let rowQuizzes = document.querySelector(".row-quizzes-all")
+        let rowQuizzesUser = document.querySelector(".row-quizzes-user")
+        let currentQuizz = quizzData[i]
+        if (isNotUndefined(listIDQuizzesOfUser)) {
+            for (let j = 0; j < currentQuizz.length; j++) {
+                if (currentQuizz.id == listIDQuizzesOfUser[j].id) {
+                    rowQuizzesUser.innerHTML += `
+                    <div onclick="loadQuizzWithID(this)" class="${currentQuizz.id} quizz" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), url('${currentQuizz.image}');">
+                        <p>${currentQuizz.title}</p>
+                    </div>
+                    `
+                }
+            }
+        }
 
-//     setTimeout(nextQuestion, 2000)
-//     verifyEndGame()
-// }
+        rowQuizzes.innerHTML += `
+        <div onclick="loadQuizzWithID(this)" class="${currentQuizz.id} quizz" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), url('${currentQuizz.image}');">
+            <p>${currentQuizz.title}</p>
+        </div>
+        `
+    }
+}
 
-// function nextQuestion() {
-//     let next = document.querySelector('.pending')
-//     next.classList.remove('pending');
-//     next.querySelector('.pending')
-//     next.scrollIntoView({ block: "start", behavior: "smooth" });
-// }
+function loadQuizzWithID(element) {
+    id = element.classList[0]
+    singleQuizz = axios.get(`${linkQuizzes}/${id}`)
+    singleQuizz.then(loadPageOfSingleQuizz)
+}
 
-// function verifyEndGame() {
-//     if (totalClicks == questions.length) {
-//         hitsPercentage = points / questions.length * 100;
-//         hitsPercentage = Math.round(hitsPercentage);
-//         showResult()
-//     }
-// }
 
-// function showResult() {
-//     let userLevel
-//     for (let i = (levels.length - 1); i >= 0; i--) {
-//         let minValueLevel = levels[i].minValue;
-//         if (hitsPercentage >= minValueLevel) {
-//             userLevel = levels[i];
-//         }
-//     }
-//     page.innerHTML += `
-//     <div class="question-board result hidden">
-//         <div class="question result" style="background-color: red;">
-//             <p>${hitsPercentage}% de acerto: ${userLevel.title}</p>
-//         </div>
-//         <div class="result-box">
-//             <img
-//                 src="${userLevel.image}">
-//             <p>${userLevel.text}</p>
-//         </div>
-//     </div>
-//     <div class="buttons">
-//         <button onclick="resetQuizz()" class="reset">Reiniciar Quizz</button>
-//         <button onclick="home()" class="home">Voltar para home</button>
-//     </div>`
+function comparator() {
+    return Math.random() - 0.5;
+}
 
-//     let result = document.querySelector('.result')
-//     result.classList.remove('hidden')
-// }
+function loadPageOfSingleQuizz(element) {
+    questions = element.data.questions
+    levels = element.data.levels
+    page.innerHTML = `
+    <div class="quizz-image" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.57), rgba(0, 0, 0, 0.57)), url('${element.data.image}')">
+        <p>${element.data.title}</p>
+    </div>`
+    for (let i = 0; i < questions.length; i++) {
+        let question = questions[i]
+        let answers = question.answers
+        answers.sort(comparator);
+        page.innerHTML += `
+        <div class="question-board">
+            <div class="question" style="background-color: ${question.color};">
+                <p>${question.title}</p>
+            </div>
+            <div class="question${i} options-board">
+                <div class="question-board-verify-answer hidden">
+                </div>
+            </div>
+            <div class="pending">
+            </div>
+        </div>`
+        optionsBoard = document.querySelector(`.question${i}`)
+        for (let j = 0; j < answers.length; j++) {
+            let answer = answers[j]
+            optionsBoard.innerHTML += `
+            <div class="${answer.isCorrectAnswer} option" onclick="selectOption(this)">
+                <img src="${answer.image}">
+                <p>${answer.text}</p>
+            </div>`
+        }
+    }
+    document.querySelector('.quizz-image').scrollIntoView({ block: "start", behavior: "smooth" });
+}
 
-// function resetQuizz() {
-//     singleQuizz = axios.get(`${linkQuizzes}/${id}`)
-//     singleQuizz.then(loadPageOfSingleQuizz)
-//     totalClicks = 0
-//     hitsPercentage = 0
-//     points = 0
-//     userLevel = undefined
-// }
+function selectOption(element) {
+    verifySelected = element.classList.contains('selected');
+    if (!verifySelected) {
+        totalClicks++;
+    }
 
-// function home() {
-//     window.location.reload()
-// }
+    element.classList.add('selected')
+    let parentElement = element.parentNode
+    parentElement.querySelector('.hidden').classList.remove('hidden')
+    let optionsFalse = parentElement.querySelectorAll('.false')
+    for (let i = 0; i < optionsFalse.length; i++) {
+        optionsFalse[i].classList.add('color')
+    }
+    parentElement.querySelector('.true').classList.add('color')
 
-// // CRIAR QUIZZ 
+    let verifyCorrectAnswer = element.classList.contains('true');
+    if (verifyCorrectAnswer) {
+        points++;
+    };
+
+    setTimeout(nextQuestion, 2000)
+    verifyEndGame()
+}
+
+function nextQuestion() {
+    let next = document.querySelector('.pending')
+    next.classList.remove('pending');
+    next.querySelector('.pending')
+    next.scrollIntoView({ block: "start", behavior: "smooth" });
+}
+
+function verifyEndGame() {
+    if (totalClicks == questions.length) {
+        hitsPercentage = points / questions.length * 100;
+        hitsPercentage = Math.round(hitsPercentage);
+        showResult()
+    }
+}
+
+function showResult() {
+    let userLevel
+    for (let i = (levels.length - 1); i >= 0; i--) {
+        let minValueLevel = levels[i].minValue;
+        if (hitsPercentage >= minValueLevel) {
+            userLevel = levels[i];
+        }
+    }
+    page.innerHTML += `
+    <div class="question-board result hidden">
+        <div class="question result" style="background-color: red;">
+            <p>${hitsPercentage}% de acerto: ${userLevel.title}</p>
+        </div>
+        <div class="result-box">
+            <img
+                src="${userLevel.image}">
+            <p>${userLevel.text}</p>
+        </div>
+    </div>
+    <div class="buttons">
+        <button onclick="resetQuizz()" class="reset">Reiniciar Quizz</button>
+        <button onclick="home()" class="home">Voltar para home</button>
+    </div>`
+
+    let result = document.querySelector('.result')
+    result.classList.remove('hidden')
+}
+
+function resetQuizz() {
+    singleQuizz = axios.get(`${linkQuizzes}/${id}`)
+    singleQuizz.then(loadPageOfSingleQuizz)
+    totalClicks = 0
+    hitsPercentage = 0
+    points = 0
+    userLevel = undefined
+}
+
+function home() {
+    window.location.reload()
+}
+
+// CRIAR QUIZZ 
 
 let title, urlImage, questionNumber, questionLevels
 
-// function createQuizz() {
-//     page.classList.add('crate-quizz-information')
-//     page.innerHTML = `
-//     <div>
-//         <h2>Comece pelo começo</h2>
-//     </div>
-//     <div class="crate-quizz-information input">
-//         <input id="title" type="url" placeholder="Título do seu quizz">
-//         <input id="url-image" type="text" placeholder="URL da imagem do seu quizz">
-//         <input id="question-number" type="number" placeholder="Quantidade de perguntas do quizz">
-//         <input id="question-level" type="number" placeholder="Quantidade de níveis do quizz">
-//     </div>
-//     <button onclick="sendInformationsQuizz()" class="create-button">Prosseguir pra criar perguntas</button>`
-// }
+function createQuizz() {
+    page.classList.add('crate-quizz-information')
+    page.innerHTML = `
+    <div>
+        <h2>Comece pelo começo</h2>
+    </div>
+    <div class="crate-quizz-information input">
+        <input id="title" type="url" placeholder="Título do seu quizz">
+        <input id="url-image" type="text" placeholder="URL da imagem do seu quizz">
+        <input id="question-number" type="number" placeholder="Quantidade de perguntas do quizz">
+        <input id="question-level" type="number" placeholder="Quantidade de níveis do quizz">
+    </div>
+    <button onclick="sendInformationsQuizz()" class="create-button">Prosseguir pra criar perguntas</button>`
+}
 
 function checkUrl(string) {
     try {
@@ -216,11 +252,8 @@ function sendInformationsQuizz() {
 
 // CRIAR QUESTÕES
 
-page.classList.add('crate-quizz-information')
-questionNumber = 3
-questionLevels = 2
-
 function createQuestions() {
+    page.classList.add('crate-quizz-information')
     page.innerHTML = `
             <div>
                 <h2>Crie suas perguntas</h2>
@@ -234,18 +267,18 @@ function createQuestions() {
                     <ion-icon onclick="openCreateQuizz(${i})" name="create-outline"></ion-icon>
                 </div>
             <div class="closed">
-                <input class="question-text" type="text" placeholder="Texto da pergunta ${i}" value="Qual a sua casa no mundo de Harry Potter?">
-                <input class="question-color" type="text" placeholder="Cor de fundo da pergunta ${i}" value="#10403B">
+                <input class="question-text" type="text" placeholder="Texto da pergunta ${i}">
+                <input class="question-color" type="text" placeholder="Cor de fundo da pergunta ${i}">
                 <h2>Resposta correta</h2>
-                <input class="correct-answer" type="text" placeholder="Resposta correta" value="É essa correta">
-                <input class="correct-answer-image" type="url" placeholder="URL da imagem" value="https://todateen.com.br/wp-content/uploads/2017/10/casas-Hogwarts-brasao.jpg">
+                <input class="correct-answer" type="text" placeholder="Resposta correta">
+                <input class="correct-answer-image" type="url" placeholder="URL da imagem">
                 <h2>Respostas incorretas</h2>
-                <input class="wrong-answer1" type="text" placeholder="Resposta incorreta 1" value="É essa errada">
-                <input class="wrong-answer1-image" type="url" placeholder="URL da imagem 1" value="https://todateen.com.br/wp-content/uploads/2017/10/casas-Hogwarts-brasao.jpg">
-                <input class="space wrong-answer2" type="text" placeholder="Resposta incorreta 2" value="É essa errada" >
-                <input class="wrong-answer2-image" type="url" placeholder="URL da imagem 2" value="https://todateen.com.br/wp-content/uploads/2017/10/casas-Hogwarts-brasao.jpg">
-                <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3" value="É essa errada">
-                <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3" value="https://todateen.com.br/wp-content/uploads/2017/10/casas-Hogwarts-brasao.jpg">
+                <input class="wrong-answer1" type="text" placeholder="Resposta incorreta 1">
+                <input class="wrong-answer1-image" type="url" placeholder="URL da imagem 1">
+                <input class="space wrong-answer2" type="text" placeholder="Resposta incorreta 2">
+                <input class="wrong-answer2-image" type="url" placeholder="URL da imagem 2">
+                <input class="space wrong-answer3" type="text" placeholder="Resposta incorreta 3">
+                <input class="wrong-answer3-image" type="url" placeholder="URL da imagem 3">
             </div>`
     }
     page.innerHTML += `<button onclick="sendQuestionToValidate()" class="create-button">Prosseguir pra criar níveis</button>`
@@ -401,28 +434,25 @@ function createLevels() {
     `
     for (let i = 1; i <= questionLevels; i++) {
         page.innerHTML += `
-        <div class="crate-quizz-information input level${i}">
+        <div class="crate-quizz-information input question${i}">
             <div class="question-number">
                 <h2>Nivel ${i}</h2>
                 <ion-icon onclick="openCreateQuizz(${i})" name="create-outline"></ion-icon>
             </div>
             <div class="closed level">
-                <input class="level-title" type="text" placeholder="Título do nível"
-                    value="Você é ótimo em Harry Potter?">
-                <input class="min-hit-percentage" type="text" placeholder="% de acerto mínima"
-                    value="100">
-                <input class="url-image-level" type="url" placeholder="URL da imagem do nível"
-                    value="https://todateen.com.br/wp-content/uploads/2017/10/casas-Hogwarts-brasao.jpg">
-                <input class="level-description" type="text" placeholder="Descrição do nível" value="Você superou tudoooooooooooooooo, parabens por fazer sua obrigação">
+                <input class="level-title" type="text" placeholder="Título do nível">
+                <input class="min-hit-percentage" type="text" placeholder="% de acerto mínima">
+                <input class="url-image-level" type="url" placeholder="URL da imagem do nível">
+                <input class="level-description" type="text" placeholder="Descrição do nível">
             </div>
         </div>`
     }
-    page.innerHTML += `<button onclick="sendLevelsToValidate()" class="create-button">Prosseguir pra criar níveis</button>`
+    page.innerHTML += `<button onclick="sendLevelToValidate()" class="create-button">Prosseguir pra criar níveis</button>`
 }
 
 // VALIDAR INFORMAÇÕES DE NÍVEIS
 
-let levelTitle, minHitPercentage, urlImageLevel, levelDescription;
+let levelTitle, minHitPercentage, urlImageLevel, levelDescription, newQuizzOfUser;
 let verifyLevelWith0Percent = false;
 
 function verifyLevel0Percent(element) {
@@ -452,21 +482,73 @@ function validateInformationLevels(element) {
 }
 
 function sendLevelToValidate() {
+    let verifyFinishedLevel = false;
     for (let i = 1; i <= questionLevels; i++) {
-        let levelToValidate = document.querySelector(`.level${i}`)
-
+        let levelToValidate = document.querySelector(`.question${i}`)
+        verifyLevel0Percent(levelToValidate)
     }
 
     if (verifyLevelWith0Percent) {
-        for (let i = 1; i < questionLevels; i++) {
-            let levelToValidate = document.querySelector(`.level${i}`)
+        for (let i = 1; i <= questionLevels; i++) {
+            let levelToValidate = document.querySelector(`.question${i}`)
 
             if (validateInformationLevels(levelToValidate) == false) {
                 break
             }
+
+            verifyFinishedLevel = true;
         }
+    } else {
+        alert("Pelo menos um nível deve ter 0 como % de acerto")
     }
 
+    if (verifyFinishedLevel) {
+        sendQuizzForAPI()
+    }
 }
 
-createQuestions()
+function sendInformationsLevel() {
+    objectQuestion.levels.push({
+        title: levelTitle,
+        image: urlImageLevel,
+        text: levelDescription,
+        minValue: minHitPercentage
+    })
+}
+
+let post
+
+function sendQuizzForAPI() {
+    post = axios.post(linkQuizzes, objectQuestion)
+    post.then(sucessOfCreateQuizz)
+}
+
+function loadQuizzWithIDOfUSer(element) {
+    id = element.id
+    singleQuizz = axios.get(`${linkQuizzes}/${id}`)
+    singleQuizz.then(loadPageOfSingleQuizz)
+}
+
+function sucessOfCreateQuizz(element) {
+    newQuizzOfUser = element.data
+    IDOfNewQuizzOfUser = newQuizzOfUser.id
+    if (isNotUndefined(listIDQuizzesOfUser)) {
+        listIDQuizzesOfUser.push(IDOfNewQuizzOfUser)
+    } else {
+        const newListIDQuizzesOfUser = [IDOfNewQuizzOfUser]
+        const newListIDQuizzesOfUserSerialization = JSON.stringify(newListIDQuizzesOfUser)
+        localStorage.setItem("listSerialization", newListIDQuizzesOfUserSerialization)
+    }
+    page.innerHTML = `
+        <div>
+            <h2>Seu quizz está pronto!</h2>
+        </div>
+        <div class="img-sucess-quizz quizz" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), url('${urlImage}');">
+            <p>${title}</p>
+        </div>
+        <div class="buttons">
+            <button onclick="loadQuizzWithIDOfUSer(${newQuizzOfUser})" class="reset">Acessar Quizz</button>
+            <button onclick="home()" class="home">Voltar pra home</button>
+        </div>
+    `
+}

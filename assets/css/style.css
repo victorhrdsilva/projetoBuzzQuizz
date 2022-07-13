@@ -57,6 +57,18 @@ body {
     cursor: pointer;
 }
 
+.title-quizzes-user {
+    display: flex;
+    padding-top: 90px;
+    margin-left: 65px;
+}
+
+.title-quizzes-user ion-icon {
+    color: #EC362D;
+    font-size: 28px;
+    cursor: pointer;
+}
+
 .all-quizzes {
     margin-top: 77px;
     margin-right: auto;
@@ -222,6 +234,7 @@ body {
 
 .quizz-list h2 {
     font-size: 23px;
+    margin-left: 65px;
 }
 
 .crate-quizz-information {
@@ -302,6 +315,16 @@ body {
 
 .open.level {
     height: 250px;
+}
+
+.img-sucess-quizz {
+    width: 500px;
+    height: 266px;
+    margin: 46px 0;
+}
+
+.img-sucess-quizz p {
+    width: 90%;
 }
 
 .space {
