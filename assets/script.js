@@ -7,7 +7,7 @@ let objectQuestion = {
     questions: [],
     levels: []
 }
-const listSerialization = localStorage.getItem("listIDQuizzesOfUser")
+const listSerialization = localStorage.getItem("listSerialization")
 let listIDQuizzesOfUser = JSON.parse(listSerialization)
 let linkQuizzes = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes'
 let quizzes = axios.get(linkQuizzes);
@@ -56,8 +56,8 @@ function loadQuizzList(quizz) {
         let rowQuizzesUser = document.querySelector(".row-quizzes-user")
         let currentQuizz = quizzData[i]
         if (isNotUndefined(listIDQuizzesOfUser)) {
-            for (let j = 0; j < currentQuizz.length; j++) {
-                if (currentQuizz.id == listIDQuizzesOfUser[j].id) {
+            for (let j = 0; j < listIDQuizzesOfUser.length; j++) {
+                if (currentQuizz.id == listIDQuizzesOfUser[j]) {
                     rowQuizzesUser.innerHTML += `
                     <div onclick="loadQuizzWithID(this)" class="${currentQuizz.id} quizz" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), url('${currentQuizz.image}');">
                         <p>${currentQuizz.title}</p>
@@ -207,12 +207,12 @@ function home() {
 let title, urlImage, questionNumber, questionLevels
 
 function createQuizz() {
-    page.classList.add('crate-quizz-information')
+    page.classList.add('create-quizz-information')
     page.innerHTML = `
     <div>
         <h2>Comece pelo começo</h2>
     </div>
-    <div class="crate-quizz-information input">
+    <div class="create-quizz-information input">
         <input id="title" type="url" placeholder="Título do seu quizz">
         <input id="url-image" type="text" placeholder="URL da imagem do seu quizz">
         <input id="question-number" type="number" placeholder="Quantidade de perguntas do quizz">
@@ -237,8 +237,8 @@ function sendInformationsQuizz() {
     questionNumber = document.getElementById('question-number').value;
 
 
-    if (title != undefined && urlImage != undefined && questionNumber != undefined && questionLevel != undefined) {
-        if (title.length > 20 && title.length < 65 && checkUrl(urlImage) && questionNumber >= 3 && questionLevel >= 2) {
+    if (title != undefined && urlImage != undefined && questionNumber != undefined && questionLevels != undefined) {
+        if (title.length > 20 && title.length < 65 && checkUrl(urlImage) && questionNumber >= 3 && questionLevels >= 2) {
             objectQuestion.title = title;
             objectQuestion.image = urlImage;
             createQuestions()
@@ -253,7 +253,7 @@ function sendInformationsQuizz() {
 // CRIAR QUESTÕES
 
 function createQuestions() {
-    page.classList.add('crate-quizz-information')
+    page.classList.add('create-quizz-information')
     page.innerHTML = `
             <div>
                 <h2>Crie suas perguntas</h2>
@@ -261,7 +261,7 @@ function createQuestions() {
     `
     for (let i = 1; i <= questionNumber; i++) {
         page.innerHTML += `
-            <div class="crate-quizz-information input question${i}">
+            <div class="create-quizz-information input question${i}">
                 <div class="question-number">
                     <h2>Pergunta ${i}</h2>
                     <ion-icon onclick="openCreateQuizz(${i})" name="create-outline"></ion-icon>
@@ -297,6 +297,7 @@ function openCreateQuizz(numberOfQuestion) {
 // VALIDAR E CRIAR O OBJETO DO QUIZZ
 
 let titleOfQuestion, colorOfQuestion, correctAnswer, correctAnswerImage, wrongAnswer1, wrongAnswer1Image, wrongAnswer2, wrongAnswer2Image, wrongAnswer3, wrongAnswer3Image
+let sendedQuestions = 0
 
 function isAHexadecimal(hexadecimal) {
     return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hexadecimal);
@@ -321,24 +322,30 @@ function validateInformationQuestion(element) {
 
     if (isNotUndefined(titleOfQuestion) && isNotUndefined(colorOfQuestion) && isNotUndefined(correctAnswer) && isNotUndefined(wrongAnswer1) && isNotUndefined(correctAnswerImage) && isNotUndefined(wrongAnswer1Image)) {
         if (titleOfQuestion.length >= 20 && isAHexadecimal(colorOfQuestion) && checkUrl(correctAnswerImage) && checkUrl(wrongAnswer1Image)) {
-            if (wrongAnswer2 == undefined && wrongAnswer2Image == undefined && wrongAnswer3 == undefined && wrongAnswer3Image == undefined) {
+            if (wrongAnswer2 == "" && wrongAnswer2Image == "" && wrongAnswer3 == "" && wrongAnswer3Image == "") {
                 sendInformationsQuestion(1);
+                sendedQuestions++
             } else if (isNotUndefined(wrongAnswer2) && isNotUndefined(wrongAnswer2Image) && checkUrl(wrongAnswer2Image)) {
-                if (wrongAnswer2 == undefined) {
+                if (wrongAnswer3 == "" && wrongAnswer3Image == "") {
                     sendInformationsQuestion(2);
+                    sendedQuestions++
                 } else if (isNotUndefined(wrongAnswer3) && isNotUndefined(wrongAnswer3Image) && checkUrl(wrongAnswer3Image)) {
                     sendInformationsQuestion(3);
+                    sendedQuestions++
+                } else {
+                    alert("Os dados da resposta errada 2 e 3 não estão preenchidos corretamente")
+                    return false
                 }
+            } else {
+                alert("Parece que você deixou alguns dados incompletos, preencha-os corretamente para continuar")
+                return false
             }
         } else {
-            alert("Preencha os dados corretamente para continuar")
+            alert("Preencha todos os dados para continuar");
             return false
         }
-    } else {
-        alert("Preencha todos os dados para continuar");
-        return false
-    }
 
+    }
 }
 
 function sendInformationsQuestion(numberOfWrongAnswer) {
@@ -418,10 +425,14 @@ function sendQuestionToValidate() {
     for (let i = 1; i <= questionNumber; i++) {
         let questionToValidate = document.querySelector(`.question${i}`)
         if (validateInformationQuestion(questionToValidate) == false) {
+            objectQuestion.questions = []
+            sendedQuestions = 0
             break
         }
     }
-    createLevels()
+    if (sendedQuestions == questionNumber) {
+        createLevels()
+    }
 }
 
 // CRIA OS NÍVEIS DO QUIZZ
@@ -434,7 +445,7 @@ function createLevels() {
     `
     for (let i = 1; i <= questionLevels; i++) {
         page.innerHTML += `
-        <div class="crate-quizz-information input question${i}">
+        <div class="create-quizz-information input question${i}">
             <div class="question-number">
                 <h2>Nivel ${i}</h2>
                 <ion-icon onclick="openCreateQuizz(${i})" name="create-outline"></ion-icon>
@@ -523,9 +534,9 @@ function sendQuizzForAPI() {
     post.then(sucessOfCreateQuizz)
 }
 
-function loadQuizzWithIDOfUSer(element) {
-    id = element.id
+function loadQuizzWithIDOfUSer(id) {
     singleQuizz = axios.get(`${linkQuizzes}/${id}`)
+    document.querySelector('.create-quizz-information').classList.remove('create-quizz-information');
     singleQuizz.then(loadPageOfSingleQuizz)
 }
 
@@ -534,6 +545,8 @@ function sucessOfCreateQuizz(element) {
     IDOfNewQuizzOfUser = newQuizzOfUser.id
     if (isNotUndefined(listIDQuizzesOfUser)) {
         listIDQuizzesOfUser.push(IDOfNewQuizzOfUser)
+        const newListIDQuizzesOfUserSerialization = JSON.stringify(listIDQuizzesOfUser)
+        localStorage.setItem("listSerialization", newListIDQuizzesOfUserSerialization)
     } else {
         const newListIDQuizzesOfUser = [IDOfNewQuizzOfUser]
         const newListIDQuizzesOfUserSerialization = JSON.stringify(newListIDQuizzesOfUser)
@@ -547,7 +560,7 @@ function sucessOfCreateQuizz(element) {
             <p>${title}</p>
         </div>
         <div class="buttons">
-            <button onclick="loadQuizzWithIDOfUSer(${newQuizzOfUser})" class="reset">Acessar Quizz</button>
+            <button onclick="loadQuizzWithIDOfUSer(${IDOfNewQuizzOfUser})" class="reset">Acessar Quizz</button>
             <button onclick="home()" class="home">Voltar pra home</button>
         </div>
     `

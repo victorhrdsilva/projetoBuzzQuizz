@@ -5,6 +5,7 @@
 body {
     background-color: #E5E5E5;
     padding: 0 30px 85px;
+    box-sizing: border-box;
 
 }
 
@@ -23,7 +24,7 @@ body {
     z-index: 4;
 }
 
-.container, .create-quizz, .quizz-image, .question-board, .question, .question-board-verify-answer, .buttons, .crate-quizz-information, .open {
+.container, .create-quizz, .quizz-image, .question-board, .question, .question-board-verify-answer, .buttons, .create-quizz-information, .open {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -60,7 +61,6 @@ body {
 .title-quizzes-user {
     display: flex;
     padding-top: 90px;
-    margin-left: 65px;
 }
 
 .title-quizzes-user ion-icon {
@@ -104,7 +104,11 @@ body {
     line-height: 22px;
     text-justify: middle;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
+}
+
+.row-quizzes-user {
+    justify-content: flex-start;
 }
 
 .quizz-image {
@@ -134,9 +138,10 @@ body {
     min-height: 137px;
     color: #FFFFFF;
     font-weight: 700;
-    word-break: break-all;
+    word-break: break-word;
     font-size: 23px;
     text-align: center;
+    max-width: 90vw;
 }
 
 .option {
@@ -144,7 +149,7 @@ body {
     font-weight: 700;
     font-size: 20px;
     cursor: pointer;
-    word-break: break-all;
+    word-break: break-word;
     width: 330px;
 }
 
@@ -192,6 +197,7 @@ body {
 .question.result {
     min-height: 99px;
     width: 727px;
+    max-width: 100vw;
 }
 
 .result-box {
@@ -203,7 +209,7 @@ body {
 
 .result-box p {
     width: 328px;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .result-box img {
@@ -237,12 +243,12 @@ body {
     margin-left: 65px;
 }
 
-.crate-quizz-information {
+.create-quizz-information {
     margin-top: 140px;
     max-width: 600px;
 }
 
-.crate-quizz-information.input {
+.create-quizz-information.input {
     width: 600px;
     background-color: #FFFFFF;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
@@ -250,7 +256,7 @@ body {
     margin-top: 27px;
 }
 
-.crate-quizz-information input {
+.create-quizz-information input {
     box-sizing: border-box;
     width: 564px;
     height: 46px;
@@ -260,7 +266,7 @@ body {
     padding-left: 23px;
 }
 
-.crate-quizz-information input::placeholder {
+.create-quizz-information input::placeholder {
     color: #BABABA;
     padding-left: 23px;
     font-size: 19px;
@@ -268,7 +274,7 @@ body {
     font-style: italic;
 }
 
-.crate-quizz-information input:not(:last-child) {
+.create-quizz-information input:not(:last-child) {
     margin-bottom: 9px;
 }
 
@@ -290,13 +296,13 @@ body {
     width: 100%;
 }
 
-.crate-quizz-information.input h2 {
+.create-quizz-information.input h2 {
     align-self: flex-start;
     margin: 15px 0 20px 17px;
     font-size: 20px;
 }
 
-.crate-quizz-information ion-icon {
+.create-quizz-information ion-icon {
     font-size: 30px;
     margin: 7px 15px;
     cursor: pointer;
@@ -329,4 +335,45 @@ body {
 
 .space {
     margin-top: 20px;
+}
+
+@media (max-width: 1110px) {
+    .row-quizzes-user {
+        justify-content: space-around;
+    }
+
+    .title-quizzes-user, .all-quizzes h2 {
+        display: flex;
+        justify-content: space-around;
+        margin-left: 0;
+    }
+
+    .quizz-list h2 {
+        margin-left: 0;
+    }
+
+    .question-board {
+        max-width: 100vw;
+    }
+
+    .options-board {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .create-quizz-information {
+        max-width: 100vw;
+    }
+
+    .create-quizz-information.input {
+        width: 100vw;
+        box-sizing: border-box;
+    }
+
+    .create-quizz-information input {
+        box-sizing: border-box;
+        width: 90vw;
+        padding-left: 0;
+    }
 }
