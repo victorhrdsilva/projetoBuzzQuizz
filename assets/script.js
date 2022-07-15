@@ -114,7 +114,7 @@ function loadPageOfSingleQuizz(element) {
             let answer = answers[j]
             optionsBoard.innerHTML += `
             <div class="${answer.isCorrectAnswer} option" onclick="selectOption(this)">
-                <img src="${answer.image}">
+                <div class = "img" style = "background-image: url('${answer.image}')"></div>
                 <p>${answer.text}</p>
             </div>`
         }
@@ -163,10 +163,12 @@ function verifyEndGame() {
 
 function showResult() {
     let userLevel
+    let maxValue = 0
     for (let i = (levels.length - 1); i >= 0; i--) {
         let minValueLevel = levels[i].minValue;
-        if (hitsPercentage >= minValueLevel) {
+        if (hitsPercentage >= minValueLevel && maxValue <= minValueLevel) {
             userLevel = levels[i];
+            maxValue = minValueLevel
         }
     }
     page.innerHTML += `
@@ -200,6 +202,7 @@ function resetQuizz() {
 
 function home() {
     window.location.reload()
+    window.scrollTo(0, 0)
 }
 
 // CRIAR QUIZZ 

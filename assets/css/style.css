@@ -24,6 +24,10 @@ body {
     z-index: 4;
 }
 
+.fixed-bar h1 {
+    cursor: pointer;
+}
+
 .container, .create-quizz, .quizz-image, .question-board, .question, .question-board-verify-answer, .buttons, .create-quizz-information, .open {
     display: flex;
     flex-direction: column;
@@ -155,10 +159,11 @@ body {
     width: 330px;
 }
 
-.option img {
+.option .img {
     width: 330px;
     height: 175px;
     margin-bottom: 8px;
+    background-size: cover;
 }
 
 .option:hover {
@@ -366,7 +371,8 @@ body {
         width: calc(50vw - 6.5vw);
     }
 
-    .option img {
+    .option .img {
+        background-image: 100%;
         width: calc(50vw - 6.5vw);
         height: calc(50vw - 25vw);
     }
@@ -377,6 +383,15 @@ body {
     
     .result-box img {
         width: calc(50vw - 6.5vw);
+    }
+
+    .img-sucess-quizz {
+        width: 80vw;
+        height: calc(80vw - 10vw);
+    }
+    
+    .img-sucess-quizz p {
+        width: 90%;
     }
 
 }
@@ -394,7 +409,7 @@ body {
     .create-quizz-information input {
         box-sizing: border-box;
         width: 90vw;
-        padding-left: 0;
+        padding-left: 15px;
     }
     
 }
