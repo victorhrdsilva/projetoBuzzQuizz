@@ -288,8 +288,9 @@ body {
 }
 
 .create-button {
-    width: 368.86px;
-    height: 54px;
+    width: 70vw;
+    max-width: 368.86px;
+    padding: 15px;
     background: #EC362D;
     border-radius: 15px;
     font-size: 21px;
